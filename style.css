@@ -1,23 +1,32 @@
+/* RESET SAFARI / MOBILE FORCED LIGHT MODE */
 :root {
-    color-scheme: light !important;
+    color-scheme: normal;
 }
 
+/* GLOBAL */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #0d0d0d;
     color: #fff;
+    -webkit-text-size-adjust: 100%;
 }
 
+/* HEADER */
 header {
     background: #111;
-    padding: 20px 40px;
+    padding: 20px 20px;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .logo span {
@@ -35,53 +44,113 @@ ul {
 ul li a {
     color: #fff;
     text-decoration: none;
+    font-size: 16px;
 }
 
+/* HERO SECTION */
 .hero {
-    padding: 120px 40px;
+    padding: 80px 20px;
     text-align: center;
     background: linear-gradient(135deg, #5E00FF, #1f0033);
 }
 
 .hero h2 {
-    font-size: 40px;
+    font-size: 32px;
     margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .cta {
     background: #5E00FF;
-    padding: 14px 28px;
+    padding: 12px 26px;
     color: #fff;
     display: inline-block;
     border-radius: 8px;
     text-decoration: none;
     margin-top: 20px;
+    font-size: 16px;
 }
 
-.features, .pricing, .faq, .contact {
-    padding: 80px 40px;
+/* SECTIONS */
+.features,
+.pricing,
+.faq,
+.contact {
+    padding: 60px 20px;
 }
 
-.feature-grid, .pricing-grid {
+.features h2,
+.pricing h2,
+.faq h2,
+.contact h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 28px;
+}
+
+/* GRID CARDS */
+.feature-grid,
+.pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
 }
 
-.feature-card, .price-card {
+.feature-card,
+.price-card {
     background: #111;
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
     border: 1px solid #333;
+    text-align: left;
 }
 
 .price-card.best {
     border: 2px solid #5E00FF;
 }
 
+/* FOOTER */
 footer {
     text-align: center;
     padding: 30px;
     background: #111;
     margin-top: 40px;
+    font-size: 14px;
+}
+
+/* MOBILE FIXES */
+@media (max-width: 600px) {
+    header {
+        padding: 15px 15px;
+    }
+
+    nav ul {
+        gap: 12px;
+    }
+
+    .hero {
+        padding: 60px 15px;
+    }
+
+    .hero h2 {
+        font-size: 26px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .cta {
+        padding: 12px 22px;
+        font-size: 15px;
+    }
+
+    .feature-grid,
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
 }
