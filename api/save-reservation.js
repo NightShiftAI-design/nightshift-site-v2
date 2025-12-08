@@ -1,36 +1,29 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   try {
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    const supabase = createClient(
+      process.env.SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    );
+
     const {
       hotel_id,
       guest_name,
       arrival_date,
       nights,
       room_type,
-      guest_count,
+      guests,
       pets,
-      nightly_rate,
+      rate_per_night,
       total_price,
-      notes,
+      notes
     } = req.body;
 
-    // Validate required fields
-    if (!hotel_id || !guest_name || !arrival_date || !nights || !room_type) {
-      return res.status(400).json({ error: "Missing required fields." });
-    }
-
-    // Insert reservation into Supabase
     const { data, error } = await supabase
       .from("reservations")
       .insert([
@@ -40,23 +33,22 @@ export default async function handler(req, res) {
           arrival_date,
           nights,
           room_type,
-          guest_count,
+          guests,
           pets,
-          nightly_rate,
+          rate_per_night,
           total_price,
-          notes,
-          status: "pending",
-        },
+          notes
+        }
       ]);
 
     if (error) {
-      console.error(error);
-      return res.status(500).json({ error: "Database insert failed." });
+      console.error("SUPABASE ERROR:", error);
+      return res.status(400).json({ error });
     }
 
-    res.status(200).json({ success: true, reservation: data });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Internal server error." });
+    return res.status(200).json({ success: true, data });
+  } catch (err) {
+    console.error("SERVER ERROR:", err);
+    return res.status(500).json({ error: "Server error" });
   }
 }
