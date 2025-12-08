@@ -2,7 +2,7 @@
   "name": "nightshift-hotels",
   "version": "1.0.0",
   "description": "NightShift Hotels website + API for reservation alerts",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "vercel dev"
   },
