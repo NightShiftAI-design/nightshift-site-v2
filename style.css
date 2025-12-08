@@ -1,14 +1,10 @@
-/* RESET SAFARI / MOBILE FORCED LIGHT MODE */
-:root {
-    color-scheme: normal;
-}
-
-/* GLOBAL */
-body {
+/* GLOBAL HTML/BODY RESET */
+html, body {
     margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
     background: #0d0d0d;
-    color: #fff;
+    color: #ffffff;
     -webkit-text-size-adjust: 100%;
 }
 
