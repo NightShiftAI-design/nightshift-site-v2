@@ -1,6 +1,10 @@
 {
   "version": 2,
-  "framework": null,
+  "framework": "static",
+  "public": true,
+  "buildCommand": "",
+  "installCommand": "",
+  "outputDirectory": ".",
   "routes": [
     {
       "src": "/api/(.*)",
