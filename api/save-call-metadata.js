@@ -7,18 +7,20 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    // Parse JSON body (Vercel does NOT auto-parse)
+    const body =
+      typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+
+    // Basic validation
+    if (!body || !body.hotel_id) {
+      return res.status(400).json({ error: 'hotel_id is required' });
+    }
+
     // Connect to Supabase
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
-
-    const body = req.body;
-
-    // Basic validation
-    if (!body.hotel_id) {
-      return res.status(400).json({ error: 'hotel_id is required' });
-    }
 
     // Insert call metadata
     const { data, error } = await supabase
