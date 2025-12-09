@@ -1,101 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NightShift Dashboard</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NightShift Dashboard</title>
 
-  <!-- REQUIRED FOR SAFARI DARK MODE -->
-  <meta name="color-scheme" content="dark light">
+<!-- FIX SAFARI / IOS DARK MODE -->
+<meta name="color-scheme" content="dark">
+<style>
+  :root { color-scheme: dark; }
 
-  <style>
-    /* FORCE SAFARI TO ALLOW DARK MODE */
-    :root {
-      color-scheme: dark;
-    }
+  body {
+    background: #0d0d0d !important;
+    color: #ffffff !important;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
 
-    html, body, * {
-      -webkit-appearance: none !important;
-      background-color: transparent !important;
-    }
+  header {
+    background: #5E00FF !important;
+    padding: 22px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: white !important;
+  }
 
-    /* GLOBAL */
-    body {
-      background: #0d0d0d !important;
-      color: #ffffff !important;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
 
-    header {
-      background: #111111 !important;
-      padding: 20px;
-      text-align: center;
-      font-size: 26px;
-      font-weight: bold;
-      border-bottom: 2px solid #5e00ff !important;
-      color: white !important;
-    }
+  h2 {
+    border-left: 4px solid #5E00FF;
+    padding-left: 10px;
+    font-size: 22px;
+    margin-top: 35px;
+  }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px;
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    background: #111;
+    overflow: hidden;
+  }
 
-    h2.section-title {
-      font-size: 22px;
-      border-left: 4px solid #5e00ff !important;
-      padding-left: 12px;
-      margin-top: 32px;
-      margin-bottom: 12px;
-      color: white;
-    }
+  th {
+    padding: 12px;
+    background: #1a1a1a !important;
+    color: #b38bff !important;
+    font-size: 14px;
+    border-bottom: 1px solid #333;
+  }
 
-    /* TABLES */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #111111 !important;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 12px;
-    }
+  td {
+    padding: 12px;
+    font-size: 14px;
+    color: white !important;
+    border-bottom: 1px solid #222;
+  }
 
-    thead {
-      background: #1a1a1a !important;
-    }
+  tr:hover td {
+    background: #262626 !important;
+  }
 
-    th {
-      padding: 12px;
-      font-size: 14px;
-      color: #b38bff !important;
-      border-bottom: 1px solid #333;
-      text-align: left;
-    }
+  .loading {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 16px;
+    color: #aaa;
+  }
+</style>
 
-    td {
-      padding: 12px;
-      font-size: 14px;
-      color: white !important;
-      border-bottom: 1px solid #222;
-    }
-
-    tr:hover td {
-      background: #181818 !important;
-    }
-
-    /* LOADING TEXT */
-    .loading {
-      padding: 20px 0;
-      text-align: center;
-      color: #bbb;
-      font-size: 16px;
-    }
-  </style>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -104,7 +84,7 @@
 
 <div class="container">
 
-  <h2 class="section-title">Reservations</h2>
+  <h2>Reservations</h2>
   <div id="res-loading" class="loading">Loading reservations...</div>
 
   <table id="reservations-table" style="display:none;">
@@ -123,8 +103,8 @@
     <tbody id="reservations-body"></tbody>
   </table>
 
-  <h2 class="section-title">Call Metadata</h2>
-  <div id="meta-loading" class="loading">Loading call activity...</div>
+  <h2>Call Metadata</h2>
+  <div id="meta-loading" class="loading">Loading call metadata...</div>
 
   <table id="metadata-table" style="display:none;">
     <thead>
@@ -144,90 +124,85 @@
 </div>
 
 <script>
-  // ---------------------------------------------------------
-  // Supabase Init
-  // ---------------------------------------------------------
-  const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
+// -------- SUPABASE INIT --------
+const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
 
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // ---------------------------------------------------------
-  // Load Reservations
-  // ---------------------------------------------------------
-  async function loadReservations() {
-    const { data, error } = await supabase
-      .from("reservations")
-      .select("*")
-      .order("created_at", { ascending: false });
+// -------- LOAD RESERVATIONS --------
+async function loadReservations() {
+  const { data, error } = await supabaseClient
+    .from("reservations")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Reservations error:", error);
-      document.getElementById("res-loading").innerText = "Failed to load reservations.";
-      return;
-    }
-
-    document.getElementById("res-loading").style.display = "none";
-    document.getElementById("reservations-table").style.display = "table";
-
-    const tbody = document.getElementById("reservations-body");
-    tbody.innerHTML = "";
-
-    data.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${row.guest_name || "-"}</td>
-        <td>${row.arrival_date || "-"}</td>
-        <td>${row.nights || "-"}</td>
-        <td>${row.room_type || "-"}</td>
-        <td>${row.guests || "-"}</td>
-        <td>${row.pets || "-"}</td>
-        <td>$${row.total_due?.toFixed(2) || "0.00"}</td>
-        <td>${row.notes || "-"}</td>
-      `;
-      tbody.appendChild(tr);
-    });
+  if (error) {
+    document.getElementById("res-loading").innerText =
+      "Failed to load reservations.";
+    return;
   }
 
-  // ---------------------------------------------------------
-  // Load Call Metadata
-  // ---------------------------------------------------------
-  async function loadCallMetadata() {
-    const { data, error } = await supabase
-      .from("call_metadata")
-      .select("*")
-      .order("created_at", { ascending: false });
+  document.getElementById("res-loading").style.display = "none";
+  document.getElementById("reservations-table").style.display = "table";
 
-    if (error) {
-      console.error("Metadata error:", error);
-      document.getElementById("meta-loading").innerText = "Failed to load call data.";
-      return;
-    }
+  const body = document.getElementById("reservations-body");
+  body.innerHTML = "";
 
-    document.getElementById("meta-loading").style.display = "none";
-    document.getElementById("metadata-table").style.display = "table";
+  data.forEach(r => {
+    body.innerHTML += `
+      <tr>
+        <td>${r.guest_name}</td>
+        <td>${r.arrival_date}</td>
+        <td>${r.nights}</td>
+        <td>${r.room_type}</td>
+        <td>${r.guests}</td>
+        <td>${r.pets}</td>
+        <td>$${Number(r.total_due).toFixed(2)}</td>
+        <td>${r.notes || "-"}</td>
+      </tr>
+    `;
+  });
+}
 
-    const tbody = document.getElementById("metadata-body");
-    tbody.innerHTML = "";
+// -------- LOAD METADATA --------
+async function loadMetadata() {
+  const { data, error } = await supabaseClient
+    .from("call_metadata")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-    data.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${row.caller_number || "-"}</td>
-        <td>${row.reason || "-"}</td>
-        <td>${row.arrival_date || "-"}</td>
-        <td>${row.duration_seconds || "-"}</td>
-        <td>${row.sentiment_score ?? "-"}</td>
-        <td>${row.tags || "-"}</td>
-        <td>${row.outcome || "-"}</td>
-      `;
-      tbody.appendChild(tr);
-    });
+  if (error) {
+    document.getElementById("meta-loading").innerText =
+      "Failed to load call data.";
+    return;
   }
 
-  // Load both tables on page load
-  loadReservations();
-  loadCallMetadata();
+  document.getElementById("meta-loading").style.display = "none";
+  document.getElementById("metadata-table").style.display = "table";
+
+  const body = document.getElementById("metadata-body");
+  body.innerHTML = "";
+
+  data.forEach(r => {
+    body.innerHTML += `
+      <tr>
+        <td>${r.caller_number}</td>
+        <td>${r.reason}</td>
+        <td>${r.arrival_date}</td>
+        <td>${r.duration_seconds}</td>
+        <td>${r.sentiment_score ?? "-"}</td>
+        <td>${r.tags ?? "-"}</td>
+        <td>${r.outcome ?? "-"}</td>
+      </tr>
+    `;
+  });
+}
+
+// LOAD BOTH
+loadReservations();
+loadMetadata();
 </script>
 
 </body>
