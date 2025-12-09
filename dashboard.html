@@ -1,385 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightShift AI – Owner Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Dashboard-specific tweaks */
-    .dashboard-container {
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 30px;
-    }
-    .dashboard-header h2 {
-      margin: 0;
-      font-size: 26px;
-    }
-    .badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid #333;
-      background: #111;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-    .stat-card {
-      background: #111;
-      border-radius: 10px;
-      padding: 16px;
-      border: 1px solid #333;
-    }
-    .stat-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      color: #aaa;
-      margin-bottom: 4px;
-    }
-    .stat-value {
-      font-size: 22px;
-      font-weight: bold;
-    }
-    .stat-sub {
-      font-size: 12px;
-      color: #888;
-      margin-top: 4px;
-    }
-    .table-section {
-      margin-top: 30px;
-    }
-    .table-section h3 {
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-    th, td {
-      border: 1px solid #333;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background: #151515;
-    }
-    tr:nth-child(even) {
-      background: #101010;
-    }
-    .pill {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: #222;
-    }
-    .pill.good {
-      color: #4ade80;
-    }
-    .pill.bad {
-      color: #f97373;
-    }
-    .pill.neutral {
-      color: #eab308;
-    }
-    .tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-    .tag {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #222;
-    }
-    .error-banner {
-      background: #3b0c0c;
-      border: 1px solid #7f1d1d;
-      padding: 10px 12px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-size: 13px;
-    }
-    .success-banner {
-      background: #022c22;
-      border: 1px solid #059669;
-      padding: 10px 12px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-size: 13px;
-    }
-    .hotel-id {
-      font-size: 11px;
-      color: #888;
-      margin-top: 4px;
-    }
-    @media (max-width: 600px) {
-      .dashboard-header {
-        align-items: flex-start;
-      }
-      table {
-        font-size: 11px;
-      }
-      th, td {
-        padding: 6px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NightShift AI – Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
 <header>
-  <nav>
-    <h1 class="logo">NightShift <span>AI</span></h1>
-    <ul>
-      <li><a href="/index.html">Home</a></li>
-      <li><a href="/pricing.html">Pricing</a></li>
-      <li><a href="/faq.html">FAQ</a></li>
-      <li><a href="/contact.html">Contact</a></li>
-    </ul>
-  </nav>
+    <nav>
+        <h1 class="logo">NightShift <span>AI</span></h1>
+        <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/pricing.html">Pricing</a></li>
+            <li><a href="/faq.html">FAQ</a></li>
+        </ul>
+    </nav>
 </header>
 
-<section class="dashboard-container">
-  <div class="dashboard-header">
-    <div>
-      <h2>Owner Dashboard – Americas Best Value Inn</h2>
-      <div class="hotel-id">
-        Hotel ID: <span id="hotel-id-label"></span>
-      </div>
-    </div>
-    <div>
-      <span class="badge">Pro – Internal Use Only</span>
-    </div>
-  </div>
+<div class="dashboard-container">
 
-  <div id="status-area"></div>
+    <h1 style="text-align:center; margin-bottom: 40px;">Dashboard – Property Overview</h1>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-label">Total Reservations (last 72h)</div>
-      <div class="stat-value" id="stat-res-count">–</div>
-      <div class="stat-sub" id="stat-res-sub">Loading…</div>
+    <!-- TOP STATS -->
+    <div class="stats-box">
+
+        <div class="stat-card">
+            <h3>Total Reservations</h3>
+            <p id="total-reservations">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Calls</h3>
+            <p id="total-calls">0</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Avg Sentiment</h3>
+            <p id="avg-sentiment">0</p>
+        </div>
+
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Total Calls Logged (last 72h)</div>
-      <div class="stat-value" id="stat-call-count">–</div>
-      <div class="stat-sub" id="stat-call-sub">Loading…</div>
+
+    <!-- RESERVATIONS TABLE -->
+    <div class="table-wrapper">
+        <h2>Reservations</h2>
+        <table id="reservations-table">
+            <thead>
+                <tr>
+                    <th>Guest</th>
+                    <th>Arrival</th>
+                    <th>Nights</th>
+                    <th>Room</th>
+                    <th>Guests</th>
+                    <th>Pets</th>
+                    <th>Rate</th>
+                    <th>Total Due</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Average Sentiment</div>
-      <div class="stat-value" id="stat-sentiment">–</div>
-      <div class="stat-sub" id="stat-sentiment-sub">-1 = angry, +1 = happy</div>
+
+    <!-- CALL LOGS TABLE -->
+    <div class="table-wrapper">
+        <h2>Call Logs</h2>
+        <table id="calls-table">
+            <thead>
+                <tr>
+                    <th>Caller</th>
+                    <th>Reason</th>
+                    <th>Arrival Date</th>
+                    <th>Duration (s)</th>
+                    <th>Sentiment</th>
+                    <th>Tags</th>
+                    <th>Risk Flags</th>
+                    <th>Outcome</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
-  </div>
 
-  <div class="table-section">
-    <h3>Recent Reservations</h3>
-    <table id="reservations-table">
-      <thead>
-        <tr>
-          <th>Created</th>
-          <th>Guest</th>
-          <th>Arrival</th>
-          <th>Nights</th>
-          <th>Room</th>
-          <th>Guests</th>
-          <th>Pets</th>
-          <th>Total Due</th>
-        </tr>
-      </thead>
-      <tbody id="reservations-body">
-        <tr><td colspan="8">Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="table-section" style="margin-top: 40px;">
-    <h3>Recent Calls</h3>
-    <table id="calls-table">
-      <thead>
-        <tr>
-          <th>Created</th>
-          <th>Caller</th>
-          <th>Reason</th>
-          <th>Arrival</th>
-          <th>Duration (sec)</th>
-          <th>Sentiment</th>
-          <th>Tags</th>
-          <th>Outcome</th>
-        </tr>
-      </thead>
-      <tbody id="calls-body">
-        <tr><td colspan="8">Loading…</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<footer>
-  <p>© 2025 NightShift AI. All rights reserved.</p>
-</footer>
+</div>
 
 <script>
-  (function() {
-    // Hard-coded for now – your hotel_id
-    const DEFAULT_HOTEL_ID = '3933b711-8cc4-445e-bc1f-40bd32e87a67';
+// === SUPABASE FETCH LOGIC ===
 
-    // Allow override via URL ?hotel=...
-    const params = new URLSearchParams(window.location.search);
-    const hotelId = params.get('hotel') || DEFAULT_HOTEL_ID;
+// Replace with your real details
+const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
+const SUPABASE_KEY = "<YOUR-SUPABASE-ANON-KEY-HERE>"; // Not service key!
 
-    document.getElementById('hotel-id-label').textContent = hotelId;
-
-    const statusArea = document.getElementById('status-area');
-    const resBody = document.getElementById('reservations-body');
-    const callsBody = document.getElementById('calls-body');
-
-    const statResCount = document.getElementById('stat-res-count');
-    const statResSub   = document.getElementById('stat-res-sub');
-    const statCallCount = document.getElementById('stat-call-count');
-    const statCallSub   = document.getElementById('stat-call-sub');
-    const statSentiment = document.getElementById('stat-sentiment');
-
-    function showError(msg) {
-      statusArea.innerHTML = '<div class="error-banner">' + msg + '</div>';
-    }
-
-    function showSuccess(msg) {
-      statusArea.innerHTML = '<div class="success-banner">' + msg + '</div>';
-    }
-
-    async function loadDashboard() {
-      try {
-        const resp = await fetch('/api/get-dashboard-data?hotel_id=' + encodeURIComponent(hotelId));
-        if (!resp.ok) {
-          showError('Failed to load dashboard data (' + resp.status + ').');
-          return;
+// Fetch Reservations
+async function loadReservations() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/reservations?select=*`, {
+        headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`
         }
-        const data = await resp.json();
-        console.log('Dashboard data:', data);
+    });
 
-        // --- Reservations table ---
-        const reservations = data.reservations || [];
-        resBody.innerHTML = '';
-        if (reservations.length === 0) {
-          resBody.innerHTML = '<tr><td colspan="8">No reservations found.</td></tr>';
-        } else {
-          reservations.forEach(r => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${escapeHtml(r.created_at || '')}</td>
-              <td>${escapeHtml(r.guest_name || '')}</td>
-              <td>${escapeHtml(r.arrival_date || '')}</td>
-              <td>${escapeHtml(r.nights ?? '')}</td>
-              <td>${escapeHtml(r.room_type || '')}</td>
-              <td>${escapeHtml(r.guests ?? '')}</td>
-              <td>${escapeHtml(r.pets || '')}</td>
-              <td>$${(r.total_due ?? 0).toFixed ? r.total_due.toFixed(2) : r.total_due}</td>
-            `;
-            resBody.appendChild(tr);
-          });
+    const data = await res.json();
+
+    const tableBody = document.querySelector("#reservations-table tbody");
+    tableBody.innerHTML = "";
+
+    data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${row.guest_name}</td>
+            <td>${row.arrival_date}</td>
+            <td>${row.nights}</td>
+            <td>${row.room_type}</td>
+            <td>${row.guests}</td>
+            <td>${row.pets}</td>
+            <td>$${row.rate_per_night}</td>
+            <td>$${row.total_due}</td>
+            <td>${row.notes ?? ""}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
+
+    document.getElementById("total-reservations").textContent = data.length;
+}
+
+
+// Fetch Call Logs
+async function loadCalls() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/call_metadata?select=*`, {
+        headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`
         }
+    });
 
-        // --- Calls table ---
-        const calls = data.calls || [];
-        callsBody.innerHTML = '';
-        if (calls.length === 0) {
-          callsBody.innerHTML = '<tr><td colspan="8">No calls logged.</td></tr>';
-        } else {
-          calls.forEach(c => {
-            const sentiment = c.sentiment_score;
-            let pillClass = 'neutral';
-            if (sentiment > 0.2) pillClass = 'good';
-            else if (sentiment < -0.2) pillClass = 'bad';
+    const data = await res.json();
 
-            const tags = (c.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-            const riskFlags = (c.risk_flags || '').split(',').map(t => t.trim()).filter(Boolean);
+    const tableBody = document.querySelector("#calls-table tbody");
+    tableBody.innerHTML = "";
 
-            const tagsHtml = [
-              ...tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`),
-              ...riskFlags.map(t => `<span class="tag">${escapeHtml(t)}</span>`)
-            ].join(' ');
+    data.forEach(row => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${row.caller_number ?? ""}</td>
+            <td>${row.reason ?? ""}</td>
+            <td>${row.arrival_date ?? ""}</td>
+            <td>${row.duration_seconds ?? ""}</td>
+            <td>${row.sentiment_score ?? ""}</td>
+            <td>${row.tags ?? ""}</td>
+            <td>${row.risk_flags ?? ""}</td>
+            <td>${row.outcome ?? ""}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
 
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${escapeHtml(c.created_at || '')}</td>
-              <td>${escapeHtml(c.caller_number || '')}</td>
-              <td>${escapeHtml(c.reason || '')}</td>
-              <td>${escapeHtml(c.arrival_date || '')}</td>
-              <td>${c.duration_seconds ?? ''}</td>
-              <td><span class="pill ${pillClass}">${sentiment ?? '–'}</span></td>
-              <td><div class="tag-list">${tagsHtml || '-'}</div></td>
-              <td>${escapeHtml(c.outcome || '')}</td>
-            `;
-            callsBody.appendChild(tr);
-          });
-        }
+    document.getElementById("total-calls").textContent = data.length;
 
-        // --- Stats ---
-        statResCount.textContent = reservations.length;
-        statResSub.textContent   = reservations.length
-          ? 'From last 72 hours'
-          : 'No reservations in last 72 hours';
+    // Calculate average sentiment
+    const sentiments = data
+        .filter(row => row.sentiment_score !== null)
+        .map(row => row.sentiment_score);
 
-        statCallCount.textContent = calls.length;
-        statCallSub.textContent   = calls.length
-          ? 'From last 72 hours'
-          : 'No calls in last 72 hours';
+    const avg = sentiments.length
+        ? (sentiments.reduce((a, b) => a + b, 0) / sentiments.length).toFixed(2)
+        : "0";
 
-        if (calls.length) {
-          const validSentiments = calls
-            .map(c => typeof c.sentiment_score === 'number' ? c.sentiment_score : null)
-            .filter(v => v !== null);
-          if (validSentiments.length) {
-            const avg = validSentiments.reduce((a,b) => a + b, 0) / validSentiments.length;
-            statSentiment.textContent = avg.toFixed(2);
-          } else {
-            statSentiment.textContent = '–';
-          }
-        } else {
-          statSentiment.textContent = '–';
-        }
+    document.getElementById("avg-sentiment").textContent = avg;
+}
 
-        showSuccess('Dashboard data loaded successfully.');
 
-      } catch (err) {
-        console.error(err);
-        showError('Unexpected error loading dashboard.');
-      }
-    }
-
-    function escapeHtml(str) {
-      if (str === null || str === undefined) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    loadDashboard();
-  })();
+// Load everything on page load
+loadReservations();
+loadCalls();
 </script>
+
 </body>
 </html>
