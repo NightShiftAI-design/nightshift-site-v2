@@ -1,34 +1,14 @@
 // api/save-reservation.js
 import { createClient } from '@supabase/supabase-js';
 
-// Helper to read JSON body in Vercel serverless functions
-async function parseBody(req) {
-  return new Promise((resolve, reject) => {
-    let body = '';
-
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
-
-    req.on('end', () => {
-      try {
-        resolve(JSON.parse(body));
-      } catch (err) {
-        reject(err);
-      }
-    });
-  });
-}
-
 export default async function handler(req, res) {
   try {
+    // Only allow POST
     if (req.method !== 'POST') {
       return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    // 🟣 Parse the JSON body manually
-    const body = await parseBody(req);
-
+    // Parse incoming data
     const {
       hotel_id,
       guest_name,
@@ -40,17 +20,21 @@ export default async function handler(req, res) {
       rate_per_night,
       total_due,
       notes
-    } = body;
+    } = req.body;
 
+    // Validate hotel_id
     if (!hotel_id) {
       return res.status(400).json({ error: 'hotel_id is required' });
     }
 
+    // Connect to Supabase using secure service role
     const supabase = createClient(
       process.env.SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      { auth: { persistSession: false } }
     );
 
+    // Insert into reservations
     const { data, error } = await supabase
       .from('reservations')
       .insert([
@@ -69,15 +53,28 @@ export default async function handler(req, res) {
       ])
       .select();
 
+    // If Supabase returns an error, show full details
     if (error) {
       console.error('Supabase insert error:', error);
-      return res.status(500).json({ error: 'Database insert failed' });
+      return res.status(500).json({
+        error: error.message || 'Database insert failed',
+        details: error.details || null,
+        hint: error.hint || null,
+        code: error.code || null
+      });
     }
 
-    return res.status(200).json({ success: true, saved: data });
+    // Success
+    return res.status(200).json({
+      success: true,
+      saved: data
+    });
 
   } catch (err) {
     console.error('Server error:', err);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({
+      error: 'Internal server error',
+      details: err.message
+    });
   }
 }
