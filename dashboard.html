@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>NightShift Dashboard</title>
 
-<!-- Clean Styling -->
 <style>
     body {
         background: #0d0d0d;
@@ -26,8 +25,8 @@
 
     .container {
         max-width: 1200px;
-        margin: auto;
-        padding: 25px;
+        margin: 25px auto;
+        padding: 20px;
     }
 
     h2 {
@@ -72,7 +71,6 @@
     }
 </style>
 
-<!-- Supabase Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
@@ -119,35 +117,50 @@
 
 </div>
 
+
 <script>
-// ---------------------------------------------------------
-// Supabase Init
-// ---------------------------------------------------------
+// =====================================================================================
+// SUPABASE CONFIG
+// =====================================================================================
 const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ---------------------------------------------------------
-// Load Reservations
-// ---------------------------------------------------------
+
+// =====================================================================================
+// SAFE: LOAD DATA ONLY AFTER PAGE COMPLETELY LOADS
+// (Prevents Vercel Crawler From Triggering Supabase Calls)
+// =====================================================================================
+document.addEventListener("DOMContentLoaded", () => {
+    loadReservations();
+    loadCallMetadata();
+});
+
+
+// =====================================================================================
+// LOAD RESERVATIONS
+// =====================================================================================
 async function loadReservations() {
     const { data, error } = await supabase
         .from("reservations")
         .select("*")
         .order("created_at", { ascending: false });
 
+    const loadingEl = document.getElementById("res-loading");
+    const tableEl = document.getElementById("reservations-table");
+    const bodyEl = document.getElementById("reservations-body");
+
     if (error) {
         console.error("Reservations error:", error);
-        document.getElementById("res-loading").innerText = "Failed to load reservations.";
+        loadingEl.innerText = "Failed to load reservations.";
         return;
     }
 
-    document.getElementById("res-loading").style.display = "none";
-    document.getElementById("reservations-table").style.display = "table";
-
-    const tbody = document.getElementById("reservations-body");
-    tbody.innerHTML = "";
+    loadingEl.style.display = "none";
+    tableEl.style.display = "table";
+    bodyEl.innerHTML = "";
 
     data.forEach(row => {
         const tr = document.createElement("tr");
@@ -161,30 +174,33 @@ async function loadReservations() {
             <td>$${row.total_due?.toFixed(2) || "0.00"}</td>
             <td>${row.notes || "-"}</td>
         `;
-        tbody.appendChild(tr);
+        bodyEl.appendChild(tr);
     });
 }
 
-// ---------------------------------------------------------
-// Load Call Metadata
-// ---------------------------------------------------------
+
+// =====================================================================================
+// LOAD CALL METADATA
+// =====================================================================================
 async function loadCallMetadata() {
     const { data, error } = await supabase
         .from("call_metadata")
         .select("*")
         .order("created_at", { ascending: false });
 
+    const loadingEl = document.getElementById("meta-loading");
+    const tableEl = document.getElementById("metadata-table");
+    const bodyEl = document.getElementById("metadata-body");
+
     if (error) {
         console.error("Metadata error:", error);
-        document.getElementById("meta-loading").innerText = "Failed to load call data.";
+        loadingEl.innerText = "Failed to load call data.";
         return;
     }
 
-    document.getElementById("meta-loading").style.display = "none";
-    document.getElementById("metadata-table").style.display = "table";
-
-    const tbody = document.getElementById("metadata-body");
-    tbody.innerHTML = "";
+    loadingEl.style.display = "none";
+    tableEl.style.display = "table";
+    bodyEl.innerHTML = "";
 
     data.forEach(row => {
         const tr = document.createElement("tr");
@@ -197,15 +213,9 @@ async function loadCallMetadata() {
             <td>${row.tags || "-"}</td>
             <td>${row.outcome || "-"}</td>
         `;
-        tbody.appendChild(tr);
+        bodyEl.appendChild(tr);
     });
 }
-
-// ---------------------------------------------------------
-// Load Both Tables on Page Load
-// ---------------------------------------------------------
-loadReservations();
-loadCallMetadata();
 </script>
 
 </body>
