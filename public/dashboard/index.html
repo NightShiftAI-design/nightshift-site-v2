@@ -2,306 +2,233 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NightShift Dashboard</title>
 
-  <!-- Tell Safari/Apple we're using dark colors -->
-  <meta name="color-scheme" content="dark" />
+  <!-- REQUIRED FOR SAFARI DARK MODE -->
+  <meta name="color-scheme" content="dark light">
 
   <style>
-    /* GLOBAL LAYOUT */
-    html,
+    /* FORCE SAFARI TO ALLOW DARK MODE */
+    :root {
+      color-scheme: dark;
+    }
+
+    html, body, * {
+      -webkit-appearance: none !important;
+      background-color: transparent !important;
+    }
+
+    /* GLOBAL */
     body {
+      background: #0d0d0d !important;
+      color: #ffffff !important;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #0d0d0d !important;
-      color: #ffffff !important;
     }
 
-    body {
-      min-height: 100vh;
-    }
-
-    /* HEADER */
     header {
-      background: #111111;
+      background: #111111 !important;
       padding: 20px;
       text-align: center;
       font-size: 26px;
       font-weight: bold;
-      border-bottom: 2px solid #5e00ff;
+      border-bottom: 2px solid #5e00ff !important;
+      color: white !important;
     }
 
-    header span {
-      color: #5e00ff;
-    }
-
-    /* PAGE CONTAINER */
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px 16px 48px;
+      padding: 24px;
     }
 
     h2.section-title {
+      font-size: 22px;
+      border-left: 4px solid #5e00ff !important;
+      padding-left: 12px;
       margin-top: 32px;
       margin-bottom: 12px;
-      font-size: 22px;
-      border-left: 4px solid #5e00ff;
-      padding-left: 10px;
+      color: white;
     }
 
-    .card {
-      background: #111111;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 24px;
-      box-shadow: 0 0 0 1px #242424;
-    }
-
-    /* LOADING MESSAGE */
-    .loading {
-      text-align: center;
-      padding: 20px 0;
-      font-size: 15px;
-      color: #bbbbbb;
-    }
-
-    /* TABLE STYLES */
+    /* TABLES */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 8px;
-      background: #111111;
-      border-radius: 10px;
+      background: #111111 !important;
+      border-radius: 12px;
       overflow: hidden;
-      font-size: 14px;
+      margin-top: 12px;
     }
 
     thead {
-      background: #1a1a1a;
-    }
-
-    th,
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #252525;
-      text-align: left;
+      background: #1a1a1a !important;
     }
 
     th {
-      color: #b38bff;
-      font-weight: 600;
+      padding: 12px;
+      font-size: 14px;
+      color: #b38bff !important;
+      border-bottom: 1px solid #333;
+      text-align: left;
+    }
+
+    td {
+      padding: 12px;
+      font-size: 14px;
+      color: white !important;
+      border-bottom: 1px solid #222;
     }
 
     tr:hover td {
-      background-color: #181818;
+      background: #181818 !important;
     }
 
-    /* SMALL BADGES / LABELS (OPTIONAL) */
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: #222;
-      color: #e0e0e0;
-    }
-
-    .badge-positive {
-      color: #4ade80;
-    }
-
-    .badge-negative {
-      color: #fb7185;
-    }
-
-    .badge-neutral {
-      color: #eab308;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      header {
-        font-size: 22px;
-        padding: 16px;
-      }
-      .container {
-        padding: 16px 12px 32px;
-      }
-      table {
-        font-size: 13px;
-      }
-      th,
-      td {
-        padding: 8px;
-      }
+    /* LOADING TEXT */
+    .loading {
+      padding: 20px 0;
+      text-align: center;
+      color: #bbb;
+      font-size: 16px;
     }
   </style>
 
-  <!-- Supabase Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-  <header>
-    NightShift <span>AI</span> — Reservations Dashboard
-  </header>
 
-  <div class="container">
-    <!-- RESERVATIONS SECTION -->
-    <h2 class="section-title">Reservations</h2>
-    <div class="card">
-      <div id="res-loading" class="loading">Loading reservations...</div>
-      <table id="reservations-table" style="display: none;">
-        <thead>
-          <tr>
-            <th>Guest</th>
-            <th>Arrival</th>
-            <th>Nights</th>
-            <th>Room</th>
-            <th>Guests</th>
-            <th>Pets</th>
-            <th>Total Due</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody id="reservations-body"></tbody>
-      </table>
-    </div>
+<header>NightShift AI — Reservations Dashboard</header>
 
-    <!-- CALL METADATA SECTION -->
-    <h2 class="section-title">Call Metadata</h2>
-    <div class="card">
-      <div id="meta-loading" class="loading">Loading call activity...</div>
-      <table id="metadata-table" style="display: none;">
-        <thead>
-          <tr>
-            <th>Caller</th>
-            <th>Reason</th>
-            <th>Arrival Date</th>
-            <th>Duration (sec)</th>
-            <th>Sentiment</th>
-            <th>Tags</th>
-            <th>Outcome</th>
-          </tr>
-        </thead>
-        <tbody id="metadata-body"></tbody>
-      </table>
-    </div>
-  </div>
+<div class="container">
 
-  <script>
-    // ---- Supabase Init ----
-    const SUPABASE_URL =
-      "https://sbzdnzouoyxmawuhdvdi.supabase.co";
-    const SUPABASE_ANON_KEY =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
+  <h2 class="section-title">Reservations</h2>
+  <div id="res-loading" class="loading">Loading reservations...</div>
 
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <table id="reservations-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>Guest</th>
+        <th>Arrival</th>
+        <th>Nights</th>
+        <th>Room</th>
+        <th>Guests</th>
+        <th>Pets</th>
+        <th>Total Due</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="reservations-body"></tbody>
+  </table>
 
-    // ---- Load Reservations ----
-    async function loadReservations() {
-      const { data, error } = await sb
-        .from("reservations")
-        .select("*")
-        .order("created_at", { ascending: false });
+  <h2 class="section-title">Call Metadata</h2>
+  <div id="meta-loading" class="loading">Loading call activity...</div>
 
-      const loadingEl = document.getElementById("res-loading");
-      const tableEl = document.getElementById("reservations-table");
-      const tbody = document.getElementById("reservations-body");
+  <table id="metadata-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>Caller</th>
+        <th>Reason</th>
+        <th>Arrival Date</th>
+        <th>Duration</th>
+        <th>Sentiment</th>
+        <th>Tags</th>
+        <th>Outcome</th>
+      </tr>
+    </thead>
+    <tbody id="metadata-body"></tbody>
+  </table>
 
-      if (error) {
-        console.error("Reservations error:", error);
-        loadingEl.textContent = "Failed to load reservations.";
-        return;
-      }
+</div>
 
-      loadingEl.style.display = "none";
-      tableEl.style.display = "table";
-      tbody.innerHTML = "";
+<script>
+  // ---------------------------------------------------------
+  // Supabase Init
+  // ---------------------------------------------------------
+  const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
 
-      data.forEach((row) => {
-        const tr = document.createElement("tr");
-        const total =
-          typeof row.total_due === "number"
-            ? `$${row.total_due.toFixed(2)}`
-            : "$0.00";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        tr.innerHTML = `
-          <td>${row.guest_name || "-"}</td>
-          <td>${row.arrival_date || "-"}</td>
-          <td>${row.nights || "-"}</td>
-          <td>${row.room_type || "-"}</td>
-          <td>${row.guests || "-"}</td>
-          <td>${row.pets || "-"}</td>
-          <td>${total}</td>
-          <td>${row.notes || "-"}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+  // ---------------------------------------------------------
+  // Load Reservations
+  // ---------------------------------------------------------
+  async function loadReservations() {
+    const { data, error } = await supabase
+      .from("reservations")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Reservations error:", error);
+      document.getElementById("res-loading").innerText = "Failed to load reservations.";
+      return;
     }
 
-    // ---- Load Call Metadata ----
-    async function loadCallMetadata() {
-      const { data, error } = await sb
-        .from("call_metadata")
-        .select("*")
-        .order("created_at", { ascending: false });
+    document.getElementById("res-loading").style.display = "none";
+    document.getElementById("reservations-table").style.display = "table";
 
-      const loadingEl = document.getElementById("meta-loading");
-      const tableEl = document.getElementById("metadata-table");
-      const tbody = document.getElementById("metadata-body");
+    const tbody = document.getElementById("reservations-body");
+    tbody.innerHTML = "";
 
-      if (error) {
-        console.error("Metadata error:", error);
-        loadingEl.textContent = "Failed to load call data.";
-        return;
-      }
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.guest_name || "-"}</td>
+        <td>${row.arrival_date || "-"}</td>
+        <td>${row.nights || "-"}</td>
+        <td>${row.room_type || "-"}</td>
+        <td>${row.guests || "-"}</td>
+        <td>${row.pets || "-"}</td>
+        <td>$${row.total_due?.toFixed(2) || "0.00"}</td>
+        <td>${row.notes || "-"}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
 
-      loadingEl.style.display = "none";
-      tableEl.style.display = "table";
-      tbody.innerHTML = "";
+  // ---------------------------------------------------------
+  // Load Call Metadata
+  // ---------------------------------------------------------
+  async function loadCallMetadata() {
+    const { data, error } = await supabase
+      .from("call_metadata")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-      data.forEach((row) => {
-        let sentimentBadge = "-";
-        if (typeof row.sentiment_score === "number") {
-          if (row.sentiment_score > 0.2) {
-            sentimentBadge = `<span class="badge badge-positive">${row.sentiment_score.toFixed(
-              2
-            )}</span>`;
-          } else if (row.sentiment_score < -0.2) {
-            sentimentBadge = `<span class="badge badge-negative">${row.sentiment_score.toFixed(
-              2
-            )}</span>`;
-          } else {
-            sentimentBadge = `<span class="badge badge-neutral">${row.sentiment_score.toFixed(
-              2
-            )}</span>`;
-          }
-        }
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${row.caller_number || "-"}</td>
-          <td>${row.reason || "-"}</td>
-          <td>${row.arrival_date || "-"}</td>
-          <td>${row.duration_seconds || "-"}</td>
-          <td>${sentimentBadge}</td>
-          <td>${row.tags || "-"}</td>
-          <td>${row.outcome || "-"}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+    if (error) {
+      console.error("Metadata error:", error);
+      document.getElementById("meta-loading").innerText = "Failed to load call data.";
+      return;
     }
 
-    // ---- Run on load ----
-    loadReservations();
-    loadCallMetadata();
-  </script>
+    document.getElementById("meta-loading").style.display = "none";
+    document.getElementById("metadata-table").style.display = "table";
+
+    const tbody = document.getElementById("metadata-body");
+    tbody.innerHTML = "";
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.caller_number || "-"}</td>
+        <td>${row.reason || "-"}</td>
+        <td>${row.arrival_date || "-"}</td>
+        <td>${row.duration_seconds || "-"}</td>
+        <td>${row.sentiment_score ?? "-"}</td>
+        <td>${row.tags || "-"}</td>
+        <td>${row.outcome || "-"}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Load both tables on page load
+  loadReservations();
+  loadCallMetadata();
+</script>
+
 </body>
 </html>
