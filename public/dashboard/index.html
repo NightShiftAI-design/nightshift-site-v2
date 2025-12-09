@@ -3,17 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="color-scheme" content="dark" />
 <title>NightShift Dashboard</title>
 
+<!-- Clean Styling -->
 <style>
-    :root {
-        color-scheme: dark;
-    }
-
     body {
         background: #0d0d0d;
-        color: #ffffff;
+        color: #fff;
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -40,7 +36,6 @@
         border-left: 5px solid #5E00FF;
         padding-left: 10px;
         font-size: 22px;
-        color: #ffffff;
     }
 
     table {
@@ -50,7 +45,6 @@
         background: #111;
         border-radius: 12px;
         overflow: hidden;
-        color: #ffffff;
     }
 
     th, td {
@@ -74,11 +68,11 @@
         text-align: center;
         padding: 40px 0;
         font-size: 18px;
-        color: #bbbbbb;
+        color: #bbb;
     }
 </style>
 
-<!-- Supabase -->
+<!-- Supabase Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
@@ -88,10 +82,8 @@
 
 <div class="container">
 
-    <!-- Reservations -->
     <h2>Reservations</h2>
     <div id="res-loading" class="loading">Loading reservations...</div>
-
     <table id="reservations-table" style="display:none;">
         <thead>
             <tr>
@@ -108,10 +100,8 @@
         <tbody id="reservations-body"></tbody>
     </table>
 
-    <!-- Call Metadata -->
     <h2>Call Metadata</h2>
     <div id="meta-loading" class="loading">Loading call activity...</div>
-
     <table id="metadata-table" style="display:none;">
         <thead>
             <tr>
@@ -129,15 +119,20 @@
 
 </div>
 
+<!-- FULL FIXED SCRIPT -->
 <script>
 const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// CORRECT WAY TO INITIALIZE
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ----------------------- LOAD RESERVATIONS -------------------------
+// ---------------------------------------------------------
+// Load Reservations
+// ---------------------------------------------------------
 async function loadReservations() {
-    const { data, error } = await supabase
+    const { data, error } = await client
         .from("reservations")
         .select("*")
         .order("created_at", { ascending: false });
@@ -170,9 +165,11 @@ async function loadReservations() {
     });
 }
 
-// ----------------------- LOAD CALL METADATA ------------------------
+// ---------------------------------------------------------
+// Load Call Metadata
+// ---------------------------------------------------------
 async function loadCallMetadata() {
-    const { data, error } = await supabase
+    const { data, error } = await client
         .from("call_metadata")
         .select("*")
         .order("created_at", { ascending: false });
@@ -204,6 +201,7 @@ async function loadCallMetadata() {
     });
 }
 
+// Load both tables when page opens
 loadReservations();
 loadCallMetadata();
 </script>
