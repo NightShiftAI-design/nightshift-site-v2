@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>NightShift Dashboard</title>
 
+<!-- FORCE STYLE REFRESH (cache buster) -->
+<meta name="dashboard-version" content="v12-royal-purple">
+
 <style>
+/* ——— GLOBAL STYLES (COLOR-LOCKED) ——— */
 body {
-    background: #0d0d0d;
-    color: #ffffff;
+    background: #0d0d0d !important;
+    color: #ffffff !important;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background: #111;
-    padding: 20px;
+    background: #111 !important;
+    padding: 25px;
     text-align: center;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: bold;
-    border-bottom: 2px solid #5E00FF;
-    color: #ffffff;
+    border-bottom: 3px solid #5E00FF;
+    letter-spacing: 1px;
 }
 
 .container {
@@ -30,42 +34,49 @@ header {
     padding: 25px;
 }
 
+/* Section Titles */
 h2 {
-    margin-top: 35px;
-    border-left: 5px solid #5E00FF;
-    padding-left: 10px;
-    font-size: 22px;
-    color: #ffffff;
+    margin-top: 40px;
+    margin-bottom: 15px;
+    border-left: 6px solid #5E00FF;
+    padding-left: 12px;
+    font-size: 24px;
+    color: #ffffff !important;
 }
 
+/* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    background: #111;
+    background: #111 !important;
     border-radius: 10px;
     overflow: hidden;
+    margin-bottom: 40px;
 }
 
 th, td {
-    padding: 12px;
+    padding: 14px;
     border-bottom: 1px solid #333;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 th {
-    background: #1a1a1a;
-    color: #5E00FF;
-    font-weight: bold;
+    background: #1a1a1a !important;
+    color: #5E00FF !important;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
 }
 
 tr:hover {
-    background: #1d1d1d;
+    background: #1e1e1e !important;
 }
 
+/* Loading text */
 .loading {
     text-align: center;
-    padding: 40px;
+    padding: 30px;
+    font-size: 18px;
     color: #bbb;
 }
 </style>
@@ -81,7 +92,6 @@ tr:hover {
 
     <h2>Reservations</h2>
     <div id="res-loading" class="loading">Loading reservations...</div>
-
     <table id="reservations-table" style="display:none;">
         <thead>
             <tr>
@@ -100,7 +110,6 @@ tr:hover {
 
     <h2>Call Metadata</h2>
     <div id="meta-loading" class="loading">Loading call activity...</div>
-
     <table id="metadata-table" style="display:none;">
         <thead>
             <tr>
@@ -119,13 +128,19 @@ tr:hover {
 </div>
 
 <script>
+/* ——— SUPABASE INIT ——— */
 const SUPABASE_URL = "https://sbzdnzouoyxmawuhdvdi.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
+const SUPABASE_ANON_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiemRuem91b3l4bWF3dWhkdmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyMDY3ODgsImV4cCI6MjA4MDc4Mjc4OH0.SV4XppZoez27_g69NsjZNeJ989bhrEAAvR_XoD5w2Ho";
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+/* ——— LOAD RESERVATIONS ——— */
 async function loadReservations() {
-    const { data, error } = await supabase.from("reservations").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase
+        .from("reservations")
+        .select("*")
+        .order("created_at", { ascending: false });
 
     if (error) {
         document.getElementById("res-loading").innerText = "Failed to load reservations.";
@@ -147,18 +162,22 @@ async function loadReservations() {
             <td>${row.room_type || "-"}</td>
             <td>${row.guests || "-"}</td>
             <td>${row.pets || "-"}</td>
-            <td>$${row.total_due?.toFixed(2) || "0.00"}</td>
+            <td>$${(row.total_due || 0).toFixed(2)}</td>
             <td>${row.notes || "-"}</td>
         `;
         tbody.appendChild(tr);
     });
 }
 
+/* ——— LOAD CALL METADATA ——— */
 async function loadCallMetadata() {
-    const { data, error } = await supabase.from("call_metadata").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase
+        .from("call_metadata")
+        .select("*")
+        .order("created_at", { ascending: false });
 
     if (error) {
-        document.getElementById("meta-loading").innerText = "Failed to load call activity.";
+        document.getElementById("meta-loading").innerText = "Failed to load call data.";
         return;
     }
 
@@ -183,8 +202,10 @@ async function loadCallMetadata() {
     });
 }
 
+/* ——— LOAD BOTH TABLES ——— */
 loadReservations();
 loadCallMetadata();
+
 </script>
 
 </body>
