@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "sentiment_analysis": true,
+  "tagging": {
+    "enabled": true,
+    "keywords": {
+      "complaint": ["dirty", "bugs", "refund", "problem", "issue", "angry"],
+      "emergency": ["fire", "bleeding", "passed out", "unconscious", "fight"],
+      "billing": ["receipt", "charge", "refund", "overcharged"],
+      "rate_match": ["online cheaper", "price match", "lower online"]
+    }
+  },
+  "risk_detection": {
+    "enabled": true,
+    "flags": {
+      "high_risk_guest": ["party", "multiple visitors", "cash only", "no ID"],
+      "potential_chargeback": ["dispute", "bank", "fraud"],
+      "security_threat": ["weapon", "break in", "stalking", "followed"]
+    }
+  },
+  "analytics": {
+    "capture_sentence_level_transcripts": true,
+    "summaries": true
+  }
+}
