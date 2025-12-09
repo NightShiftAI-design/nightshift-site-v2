@@ -4,6 +4,14 @@
     {
       "src": "^/api/(.*)$",
       "dest": "/api/$1"
+    },
+    {
+      "src": "^/dashboard$",
+      "dest": "/dashboard/index.html"
+    },
+    {
+      "src": "^/dashboard/(.*)$",
+      "dest": "/dashboard/$1"
     }
   ]
 }
