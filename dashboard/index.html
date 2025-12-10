@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightShift Dashboard</title>
+
+  <link rel="stylesheet" href="/dashboard/style.css">
+
+  <script>
+    function getCookie(name) {
+      return document.cookie.split("; ").find(r => r.startsWith(name + "="));
+    }
+    if (!getCookie("ns-auth")) {
+      window.location.href = "/dashboard/login.html";
+    }
+  </script>
+</head>
+
+<body>
+
+<header>
+  <h1>NightShift Dashboard</h1>
+  <button onclick="logout()" class="logout-btn">Logout</button>
+</header>
+
+<main>
+  <section id="stats">
+    <h2>Daily Call Summary</h2>
+    <div id="stats-content">Loading…</div>
+  </section>
+
+  <section id="reservations">
+    <h2>Latest Reservations</h2>
+    <div id="reservations-list">Loading…</div>
+  </section>
+</main>
+
+<script src="/dashboard/supabase-client.js"></script>
+<script src="/dashboard/dashboard.js"></script>
+
+<script>
+function logout() {
+  document.cookie = "ns-auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/dashboard;";
+  window.location.href = "/dashboard/login.html";
+}
+</script>
+
+</body>
+</html>
