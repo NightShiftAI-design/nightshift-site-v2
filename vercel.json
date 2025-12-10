@@ -3,23 +3,24 @@
   "builds": [
     { "src": "index.html", "use": "@vercel/static" },
     { "src": "pricing.html", "use": "@vercel/static" },
-    { "src": "contact.html", "use": "@vercel/static" },
     { "src": "faq.html", "use": "@vercel/static" },
+    { "src": "contact.html", "use": "@vercel/static" },
     { "src": "style.css", "use": "@vercel/static" },
-    { "src": "public/**", "use": "@vercel/static" },
-    { "src": "api/**/*.js", "use": "@vercel/node" }
+    { "src": "public/**", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/", "dest": "/index.html" },
     { "src": "/pricing", "dest": "/pricing.html" },
-    { "src": "/contact", "dest": "/contact.html" },
+    { "src": "/pricing.html", "dest": "/pricing.html" },
+
     { "src": "/faq", "dest": "/faq.html" },
+    { "src": "/faq.html", "dest": "/faq.html" },
+
+    { "src": "/contact", "dest": "/contact.html" },
+    { "src": "/contact.html", "dest": "/contact.html" },
 
     { "src": "/style.css", "dest": "/style.css" },
 
-    { "src": "/public/(.*)", "dest": "/public/$1" },
-
-    { "src": "/api/(.*)", "dest": "/api/$1.js" },
-
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/public/(.*)", "dest": "/public/$1" }
   ]
 }
