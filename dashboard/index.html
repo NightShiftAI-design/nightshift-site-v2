@@ -4,30 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NightShift Dashboard</title>
-
-  <!-- Dashboard Stylesheet -->
   <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
+
   <div class="dashboard-container">
+
     <header class="dashboard-header">
       <h1>NightShift Dashboard</h1>
-      <button id="logout-btn" class="logout-btn">Logout</button>
+      <button id="logout-btn" class="logout-button">Logout</button>
     </header>
 
     <section class="dashboard-section">
-      <h2>Daily Call Summary</h2>
-      <div id="stats-content" class="dashboard-card">Loading...</div>
+      <h2>Last 7 Days – Call Summary</h2>
+      <div id="stats-content" class="dashboard-card">
+        Loading…
+      </div>
     </section>
 
     <section class="dashboard-section">
       <h2>Latest Reservations</h2>
-      <div id="reservations-list" class="dashboard-card">Loading...</div>
+      <div id="reservations-list" class="dashboard-card">
+        Loading…
+      </div>
     </section>
+
   </div>
 
-  <!-- Dashboard Logic -->
+  <!-- ✅ MUST BE LAST — Correctly ordered script tags -->
+  <script type="module" src="./supabase-client.js"></script>
   <script type="module" src="./dashboard.js"></script>
+
 </body>
 </html>
