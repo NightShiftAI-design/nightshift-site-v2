@@ -1,64 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightShift Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NightShift Dashboard</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Dashboard Styles -->
-  <link rel="stylesheet" href="/dashboard/style.css" />
+  <!-- Dashboard Stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>NightShift Dashboard</h1>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </header>
 
-  <!-- Top Navigation -->
-  <header class="dash-header">
-    <h1 class="dash-title">NightShift Dashboard</h1>
-    <button class="logout-btn" id="logoutBtn">Logout</button>
-  </header>
+    <section class="dashboard-section">
+      <h2>Daily Call Summary</h2>
+      <div id="stats-content" class="dashboard-card">Loading...</div>
+    </section>
 
-  <main class="container">
+    <section class="dashboard-section">
+      <h2>Latest Reservations</h2>
+      <div id="reservations-list" class="dashboard-card">Loading...</div>
+    </section>
+  </div>
 
-    <!-- DAILY CALL SUMMARY -->
-    <section class="card">
-      <h2>Daily Call Summary</h2>
-      <div id="daily-calls" class="loading">Loading...</div>
-    </section>
-
-    <!-- LATEST RESERVATIONS -->
-    <section class="card">
-      <h2>Latest Reservations</h2>
-      <div id="reservations" class="loading">Loading...</div>
-    </section>
-
-  </main>
-
-  <!-- Supabase Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- Your Supabase Client Config -->
-  <script src="/dashboard/supabase-client.js"></script>
-
-  <!-- Dashboard Logic -->
-  <script src="/dashboard/dashboard.js"></script>
-
-  <script>
-    // Redirect to login if no session
-    supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) {
-        window.location.href = "/dashboard/login.html";
-      }
-    });
-
-    // Logout handler
-    document.getElementById("logoutBtn").onclick = async () => {
-      await supabase.auth.signOut();
-      window.location.href = "/dashboard/login.html";
-    };
-  </script>
-
+  <!-- Dashboard Logic -->
+  <script type="module" src="./dashboard.js"></script>
 </body>
 </html>
