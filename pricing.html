@@ -1,68 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pricing – NightShift AI</title>
-    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<header>
-    <nav>
-        <h1 class="logo">NightShift <span>AI</span></h1>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="faq.html">FAQ</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <h1 class="logo">NightShift <span>AI</span></h1>
 
-<section class="pricing">
-    <h2>Simple, Transparent Pricing</h2>
-
-    <div class="pricing-grid">
-
-        <div class="price-card">
-            <h3>Core</h3>
-            <p class="price">$299/mo</p>
-            <ul>
-                <li>24/7 Call Answering</li>
-                <li>Basic Room Booking</li>
-                <li>GM Notifications</li>
-                <li>FAQ Automation</li>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a class="active" href="pricing.html">Pricing</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
+        </nav>
+    </header>
+
+    <!-- Pricing Hero -->
+    <section class="hero pricing-hero">
+        <div class="hero-content">
+            <h2>Simple, Transparent Pricing</h2>
+            <p>Pick only what your property needs — no contracts, no hidden fees.</p>
         </div>
+    </section>
 
-        <div class="price-card best">
-            <h3>Pro</h3>
-            <p class="price">$499/mo</p>
-            <ul>
-                <li>Everything in Core</li>
-                <li>Payment Collection</li>
-                <li>Full Caller Transcripts</li>
-                <li>Reservation Integrations</li>
-            </ul>
+    <!-- Pricing Cards -->
+    <section class="pricing-section">
+        <h2 class="section-title">Choose Your Plan</h2>
+
+        <div class="pricing-grid">
+
+            <!-- Core Plan -->
+            <div class="pricing-card">
+                <h3>Core</h3>
+                <p class="price">$5,999 one-time<br><span class="monthly">$499/mo × 12 if financed</span></p>
+
+                <ul class="feature-list">
+                    <li>✓ Answers calls 24/7 in under 3 seconds</li>
+                    <li>✓ Books rooms with taxes included</li>
+                    <li>✓ Handles pet/smoking policies</li>
+                    <li>✓ Sends booking summary to GM</li>
+                    <li>✓ Secure payment process (PCI safe)</li>
+                </ul>
+
+                <a href="contact.html" class="cta-button">Get Started</a>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pricing-card popular">
+                <h3>Pro <span class="badge">Most Popular</span></h3>
+                <p class="price">$8,999 one-time<br><span class="monthly">$749/mo × 12 if financed</span></p>
+
+                <ul class="feature-list">
+                    <li>✓ Everything in Core</li>
+                    <li>✓ Multi-property analytics dashboard</li>
+                    <li>✓ Dual-number call routing</li>
+                    <li>✓ Advanced reservation alerts</li>
+                    <li>✓ Custom greetings + hotel branding</li>
+                    <li>✓ Live transfer & escalation control</li>
+                </ul>
+
+                <a href="contact.html" class="cta-button">Upgrade to Pro</a>
+            </div>
+
+            <!-- Elite Plan -->
+            <div class="pricing-card">
+                <h3>Elite</h3>
+                <p class="price">$14,999 one-time<br><span class="monthly">$1,199/mo × 12 if financed</span></p>
+
+                <ul class="feature-list">
+                    <li>✓ Everything in Pro</li>
+                    <li>✓ Full call center replacement</li>
+                    <li>✓ AI customized with your GM’s voice</li>
+                    <li>✓ Real-time occupancy API integrations</li>
+                    <li>✓ Automated upsell engine</li>
+                    <li>✓ Direct connection to PMS (if supported)</li>
+                </ul>
+
+                <a href="contact.html" class="cta-button">Go Elite</a>
+            </div>
         </div>
+    </section>
 
-        <div class="price-card">
-            <h3>Elite</h3>
-            <p class="price">$999/mo</p>
-            <ul>
-                <li>Everything in Pro</li>
-                <li>Custom Voice</li>
-                <li>Full AI Training</li>
-                <li>24/7 Technical Support</li>
-            </ul>
-        </div>
-
-    </div>
-</section>
-
-<footer>
-    <p>© 2025 NightShift AI. All rights reserved.</p>
-</footer>
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 NightShift AI. All rights reserved.</p>
+        <p><a href="contact.html">Contact Us</a></p>
+    </footer>
 
 </body>
 </html>
