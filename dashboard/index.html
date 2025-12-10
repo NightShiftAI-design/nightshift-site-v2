@@ -1,50 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightShift Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightShift Dashboard</title>
 
-  <link rel="stylesheet" href="/dashboard/style.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-  <script>
-    function getCookie(name) {
-      return document.cookie.split("; ").find(r => r.startsWith(name + "="));
-    }
-    if (!getCookie("ns-auth")) {
-      window.location.href = "/dashboard/login.html";
-    }
-  </script>
+  <!-- Dashboard Styles -->
+  <link rel="stylesheet" href="/dashboard/style.css" />
 </head>
 
 <body>
 
-<header>
-  <h1>NightShift Dashboard</h1>
-  <button onclick="logout()" class="logout-btn">Logout</button>
-</header>
+  <!-- Top Navigation -->
+  <header class="dash-header">
+    <h1 class="dash-title">NightShift Dashboard</h1>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </header>
 
-<main>
-  <section id="stats">
-    <h2>Daily Call Summary</h2>
-    <div id="stats-content">Loading…</div>
-  </section>
+  <main class="container">
 
-  <section id="reservations">
-    <h2>Latest Reservations</h2>
-    <div id="reservations-list">Loading…</div>
-  </section>
-</main>
+    <!-- DAILY CALL SUMMARY -->
+    <section class="card">
+      <h2>Daily Call Summary</h2>
+      <div id="daily-calls" class="loading">Loading...</div>
+    </section>
 
-<script src="/dashboard/supabase-client.js"></script>
-<script src="/dashboard/dashboard.js"></script>
+    <!-- LATEST RESERVATIONS -->
+    <section class="card">
+      <h2>Latest Reservations</h2>
+      <div id="reservations" class="loading">Loading...</div>
+    </section>
 
-<script>
-function logout() {
-  document.cookie = "ns-auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/dashboard;";
-  window.location.href = "/dashboard/login.html";
-}
-</script>
+  </main>
+
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Your Supabase Client Config -->
+  <script src="/dashboard/supabase-client.js"></script>
+
+  <!-- Dashboard Logic -->
+  <script src="/dashboard/dashboard.js"></script>
+
+  <script>
+    // Redirect to login if no session
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        window.location.href = "/dashboard/login.html";
+      }
+    });
+
+    // Logout handler
+    document.getElementById("logoutBtn").onclick = async () => {
+      await supabase.auth.signOut();
+      window.location.href = "/dashboard/login.html";
+    };
+  </script>
 
 </body>
 </html>
